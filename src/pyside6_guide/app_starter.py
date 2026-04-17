@@ -78,7 +78,7 @@ class MainWindow(QMainWindow):
         elif not state:
             output = " Please enter your state."
         else:
-            output = f"Hello, {name} from {town}, {state}!"
+            output = f"Welcome, {name} from {town}, {state}!"
 
         self.greet_label.setText(output)
     
