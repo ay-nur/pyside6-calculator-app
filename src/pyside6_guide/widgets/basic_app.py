@@ -5,8 +5,13 @@ A demo of the most basic input/output: labels, text inputs, and buttons.
 """
 
 import sys
+from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
     QApplication,
+    QSpinBox,
+    QDoubleSpinBox,
+    QComboBox,
+    QHBoxLayout,
     QLabel,
     QLineEdit,
     QMainWindow,
@@ -29,8 +34,25 @@ class MainWindow(QMainWindow):
 
         # TODO: add a text input for user's name
         self.name_input = QLineEdit(placeholderText="Name")
+        self.name_input.setContentsMargins(0,0,0,12)
         self.town_input = QLineEdit(placeholderText="Town")
         self.state_input = QLineEdit(placeholderText="State")
+
+        # TODO: add one or more horizontal layouts with widgets side by side
+        age_layout = QHBoxLayout()
+        year_spinbox = QSpinBox()
+        age_spinbox = QSpinBox()
+        age_layout.addWidget(age_spinbox)
+        age_layout.addWidget(year_spinbox)
+
+        label_layout = QHBoxLayout()
+        age_label = QLabel("Age", alignment=Qt.AlignmentFlag.AlignHCenter)
+        year_label = QLabel("Year", alignment=Qt.AlignmentFlag.AlignHCenter)
+        label_layout.addWidget(age_label)
+        label_layout.addWidget(year_label)
+
+        # TODO: add margins and spacing
+        
 
         # TODO: add a push button to greet user
         submit_button = QPushButton("Submit")
@@ -56,8 +78,10 @@ class MainWindow(QMainWindow):
         layout.addWidget(title_label)
         layout.addWidget(self.output_label)
         layout.addWidget(self.name_input)
-        layout.addWidget(self.town_input)
-        layout.addWidget(self.state_input)
+        #layout.addWidget(self.town_input)
+        #layout.addWidget(self.state_input)
+        layout.addLayout(label_layout)
+        layout.addLayout(age_layout)
         layout.addWidget(submit_button)
         layout.addWidget(clear_button)
         layout.addWidget(self.greet_label)
