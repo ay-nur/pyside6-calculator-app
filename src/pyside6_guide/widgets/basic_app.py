@@ -1,7 +1,7 @@
 """
 basic_app.py
-by HundredVisionsGuy
-A demo of the most basic input/output: labels, text inputs, and buttons.
+by Ayca Erdogan
+A basic calculator GUI app that takes the initial price of the game and the sale to calculate the new price of the game. 
 """
 
 import sys
