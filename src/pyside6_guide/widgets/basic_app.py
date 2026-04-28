@@ -30,61 +30,66 @@ class MainWindow(QMainWindow):
         self.resize(320, 300)
 
         layout = QVBoxLayout()
-        title_label = QLabel("Basic App: a simple greeting app.")
+        title_label = QLabel("Game Price Calculator")
+        title_label.setContentsMargins(0,0,0,12)
 
-        # TODO: add a text input for user's name
+        # TODO: add a text input for game name
         self.name_input = QLineEdit(placeholderText="Name")
         self.name_input.setContentsMargins(0,0,0,12)
-        self.town_input = QLineEdit(placeholderText="Town")
-        self.state_input = QLineEdit(placeholderText="State")
 
         # TODO: add one or more horizontal layouts with widgets side by side
-        age_layout = QHBoxLayout()
-        year_spinbox = QSpinBox()
-        age_spinbox = QSpinBox()
-        age_layout.addWidget(age_spinbox)
-        age_layout.addWidget(year_spinbox)
+        game_layout = QHBoxLayout()
+        game_label = QLabel("Initial Price:")
+        self.game_spinbox = QDoubleSpinBox()
+        game_layout.addWidget(game_label)
+        game_layout.addWidget(self.game_spinbox)
 
-        label_layout = QHBoxLayout()
-        age_label = QLabel("Age", alignment=Qt.AlignmentFlag.AlignHCenter)
-        year_label = QLabel("Year", alignment=Qt.AlignmentFlag.AlignHCenter)
-        label_layout.addWidget(age_label)
-        label_layout.addWidget(year_label)
+        sale_layout = QHBoxLayout()
+        self.sale_spinbox = QSpinBox()
+        sale_label = QLabel("Percent Off:")
+        sale_layout.addWidget(sale_label)
+        sale_layout.addWidget(self.sale_spinbox)
 
-        # TODO: add margins and spacing
-        
+        # TODO: add limits for spinbox and labels
+        self.game_spinbox.setMinimum(0.00)
+        self.sale_spinbox.setMinimum(0)
 
-        # TODO: add a push button to greet user
+        self.game_spinbox.setPrefix("$")
+        self.sale_spinbox.setSuffix("%")
+
+        # TODO: add a push button to display output
+        buttons_layout = QHBoxLayout()
         submit_button = QPushButton("Submit")
         submit_button.clicked.connect(self.get_input)
+
         clear_button = QPushButton("Clear")
         clear_button.clicked.connect(self.clear_inputs)
 
-        # TODO: add a label to greet user
-        self.instructions = "Enter your name, town, and state, then click the button."
-        self.output_label = QLabel(self.instructions)
+        buttons_layout.addWidget(submit_button)
+        buttons_layout.addWidget(clear_button)
+
+        # TODO: add instructions
+        self.instructions1 = "Enter the name of the game."
+        self.instructions2 = "Enter the initial price and sale percentage."
+        self.output_label = QLabel(self.instructions1)
         self.output_label.setWordWrap(True)
-        self.greet_label = QLabel()
+        self.gameprice_label = QLabel(self.instructions2)
+        self.price_label = QLabel()
 
-        """
-        Challenges:
-            * Add another text input (last name, home town, etc.)
-            * Add a clear button that, when clicked will
-                - clear the text in the name input
-                - reset the output text to its initial value
-        """
-
+        # TODO: add stylesheets
+        title_label.setStyleSheet("font-size: 20px; font-weight: bold;")
+        self.output_label.setStyleSheet("font-size: 14px;")
+        self.gameprice_label.setStyleSheet("font-size: 14px;")
+        
         # add widgets & layouts to main layout
         layout.addWidget(title_label)
         layout.addWidget(self.output_label)
         layout.addWidget(self.name_input)
-        #layout.addWidget(self.town_input)
-        #layout.addWidget(self.state_input)
-        layout.addLayout(label_layout)
-        layout.addLayout(age_layout)
-        layout.addWidget(submit_button)
-        layout.addWidget(clear_button)
-        layout.addWidget(self.greet_label)
+        layout.addWidget(self.gameprice_label)
+        layout.addLayout(game_layout)
+        layout.addLayout(sale_layout)
+        layout.addLayout(buttons_layout)
+        layout.addWidget(self.price_label)
 
         # [OPTIONAL] Add a stretch to move everything up
         layout.addStretch()
@@ -98,27 +103,33 @@ class MainWindow(QMainWindow):
         """Get the text from the name input and update the output label to greet the user."""
         output = ""
         name = self.name_input.text()
-        town = self.town_input.text()
-        state = self.state_input.text()
+        game = self.game_spinbox.value()
+        sale = self.sale_spinbox.value()
 
+        # Calculation
+        convert = sale * 0.01
+        price_off = game * convert
+        output_sale = game - price_off
+        
+        # Output
         if not name:
-            output = "Please enter your name."
-        elif not town:
-            output = " Please enter your town."
-        elif not state:
-            output = " Please enter your state."
+            output = "Please enter the game name."
+        elif game == 0.00:
+            output = f'{name} is free!'
+        elif sale == 0:
+            output = f'{name} is not on sale.'
         else:
-            output = f"Hello, {name} from {town}, {state}!"
+            output = f'{name} is on sale for {output_sale} dollars.'
 
-        self.greet_label.setText(output)
+        self.price_label.setText(output)
     
     def clear_inputs(self):        
         """Clear the text in the name input and reset the output label to its initial value."""
         self.name_input.clear()
-        self.town_input.clear()
-        self.state_input.clear()
-        self.greet_label.clear()
-        self.output_label.setText(self.instructions)
+        self.price_label.clear()
+        self.game_spinbox.clear()
+        self.sale_spinbox.clear()
+        self.output_label.setText(self.instructions1)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
