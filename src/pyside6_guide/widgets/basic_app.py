@@ -53,13 +53,14 @@ class MainWindow(QMainWindow):
         # TODO: add limits for spinbox and labels
         self.game_spinbox.setMinimum(0.00)
         self.sale_spinbox.setMinimum(0)
+        self.sale_spinbox.setMaximum(100)
 
         self.game_spinbox.setPrefix("$")
         self.sale_spinbox.setSuffix("%")
 
         # TODO: add a push button to display output
         buttons_layout = QHBoxLayout()
-        submit_button = QPushButton("Submit")
+        submit_button = QPushButton("Calcluate")
         submit_button.clicked.connect(self.get_input)
 
         clear_button = QPushButton("Clear")
@@ -80,7 +81,7 @@ class MainWindow(QMainWindow):
         title_label.setStyleSheet("font-size: 20px; font-weight: bold;")
         self.output_label.setStyleSheet("font-size: 14px;")
         self.gameprice_label.setStyleSheet("font-size: 14px;")
-        
+
         # add widgets & layouts to main layout
         layout.addWidget(title_label)
         layout.addWidget(self.output_label)
@@ -127,8 +128,8 @@ class MainWindow(QMainWindow):
         """Clear the text in the name input and reset the output label to its initial value."""
         self.name_input.clear()
         self.price_label.clear()
-        self.game_spinbox.clear()
-        self.sale_spinbox.clear()
+        self.game_spinbox.setValue(0)
+        self.sale_spinbox.setValue(0)
         self.output_label.setText(self.instructions1)
 
 if __name__ == "__main__":
